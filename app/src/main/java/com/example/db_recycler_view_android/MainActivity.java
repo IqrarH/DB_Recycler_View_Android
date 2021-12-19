@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    StudentModel studentModel;
     List<StudentModel> studentsList = new ArrayList<>();
 
 
@@ -34,9 +37,27 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.myRecyclerView);
         recyclerView.setHasFixedSize(true);
 
+        DbHelper dbHelper = new DbHelper(MainActivity.this);
+        studentsList = dbHelper.getAllStudents();
+
         layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
 
+        adapter = new myRecyclerViewAdapter(studentsList) ;
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void add(View view) {
+        try {
+            studentModel = new StudentModel(editName.getText().toString(), Integer.parseInt(editAge.getText().toString()), switchIsActive.isChecked());
+            Toast.makeText(MainActivity.this, studentModel.toString(), Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+        }
+        DbHelper dbHelper = new DbHelper(MainActivity.this);
+        dbHelper.addStudent(studentModel);
+        studentsList = dbHelper.getAllStudents();
         adapter = new myRecyclerViewAdapter(studentsList) ;
         recyclerView.setAdapter(adapter);
     }

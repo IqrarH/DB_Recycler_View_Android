@@ -29,7 +29,7 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
     public void onBindViewHolder(@NonNull myRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.data = studentsList.get(position);
         holder.textViewStudentName.setText(holder.data.getName());
-        holder.textViewAge.setText(holder.data.getAge());
+        holder.textViewAge.setText(String.valueOf(holder.data.getAge()));
         holder.textViewActive.setText(holder.data.isActive()? "Active" : "Inactive");
     }
 
