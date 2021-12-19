@@ -1,5 +1,6 @@
 package com.example.db_recycler_view_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,5 +29,18 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + STUDENT_TABLE);
         onCreate(db);
+    }
+
+    public void  addStudent(StudentModel STUDENTModel){
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Hash map, as we did in bundles
+        ContentValues cv = new ContentValues();
+
+        cv.put(STUDENT_NAME, STUDENTModel.getName());
+        cv.put(STUDENT_AGE, STUDENTModel.getAge());
+        cv.put(ACTIVE_STUDENT, STUDENTModel.isActive());
+        db.insert(STUDENT_TABLE, null, cv);
+        db.close();
+
     }
 }
