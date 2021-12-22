@@ -1,9 +1,13 @@
 package com.example.db_recycler_view_android;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +16,11 @@ import java.util.List;
 
 public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAdapter.MyViewHolder> {
     List<StudentModel> studentsList;
+    private static Context context;
 
-    public myRecyclerViewAdapter(List<StudentModel> studentsList){
+    public myRecyclerViewAdapter(Context context, List<StudentModel> studentsList){
         this.studentsList = studentsList;
+        this.context = context;
     }
 
     @NonNull
@@ -31,6 +37,24 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
         holder.textViewStudentName.setText(holder.data.getName());
         holder.textViewAge.setText(String.valueOf(holder.data.getAge()));
         holder.textViewActive.setText(holder.data.isActive()? "Active" : "Inactive");
+
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                removeItem(holder.getAdapterPosition());
+                DbHelper dbHelper = new DbHelper(context);
+                dbHelper.deleteStudent(holder.data.getId());
+            }
+        });
+
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Log.d("EDIT",String.valueOf(holder.data.getId()));
+            }
+        });
     }
 
     @Override
@@ -42,13 +66,23 @@ public class myRecyclerViewAdapter extends RecyclerView.Adapter<myRecyclerViewAd
         TextView textViewStudentName;
         TextView textViewAge;
         TextView textViewActive;
+        ImageView delete;
+        ImageView edit;
         StudentModel data;
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
             textViewStudentName = itemView.findViewById(R.id.textViewStudentName);
             textViewAge = itemView.findViewById(R.id.textViewAge);
             textViewActive = itemView.findViewById(R.id.textViewActive);
+            delete = itemView.findViewById(R.id.imageView);
+            edit = itemView.findViewById(R.id.imageView2);
         }
+    }
+
+    private void removeItem(int position) {
+        studentsList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, studentsList.size());
     }
 
 }

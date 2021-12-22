@@ -5,10 +5,11 @@ public class StudentModel {
     private int age;
     private boolean isActive;
     private int id;
-    public StudentModel(String name, int age, boolean isActive) {
+    public StudentModel(String name, int age, boolean isActive, int id) {
         this.name = name;
         this.age = age;
         this.isActive = isActive;
+        this.id = id;
     }
 
     public String getName() {

@@ -47,6 +47,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
+    public void deleteStudent(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(STUDENT_TABLE,"STUDENTID=?",new String[]{String.valueOf(id)});
+        db.close();
+
+    }
+
     public ArrayList<StudentModel> getAllStudents() {
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -61,9 +68,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
                 studentArrayList.add(new StudentModel(cursorCourses.getString(1),
                         cursorCourses.getInt(2),
-                        cursorCourses.getInt(3) == 1 ? true : false));
+                        cursorCourses.getInt(3) == 1 ? true : false, cursorCourses.getInt(0)));
             } while (cursorCourses.moveToNext());
-
         }
 
         cursorCourses.close();

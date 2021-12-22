@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new myRecyclerViewAdapter(studentsList) ;
+        adapter = new myRecyclerViewAdapter(MainActivity.this,studentsList) ;
         recyclerView.setAdapter(adapter);
     }
 
     public void add(View view) {
         try {
-            studentModel = new StudentModel(editName.getText().toString(), Integer.parseInt(editAge.getText().toString()), switchIsActive.isChecked());
+            studentModel = new StudentModel(editName.getText().toString(), Integer.parseInt(editAge.getText().toString()), switchIsActive.isChecked(),0);
             Toast.makeText(MainActivity.this, studentModel.toString(), Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         DbHelper dbHelper = new DbHelper(MainActivity.this);
         dbHelper.addStudent(studentModel);
         studentsList = dbHelper.getAllStudents();
-        adapter = new myRecyclerViewAdapter(studentsList) ;
+        adapter = new myRecyclerViewAdapter(MainActivity.this,studentsList) ;
         recyclerView.setAdapter(adapter);
     }
 }
